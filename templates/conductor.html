@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nazigi Stamford Bus - Conductor Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .value {
+            color: #667eea;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .card h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        textarea, input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        textarea:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .response-item {
+            padding: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        
+        .response-item strong {
+            color: #333;
+        }
+        
+        .response-item .time {
+            color: #999;
+            font-size: 12px;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .stop-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .stop-badge {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .stop-badge .stop-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 12px;
+        }
+        
+        .stop-badge .stop-count {
+            color: #667eea;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="loginContainer" class="login-container">
+        <h2 style="text-align: center; color: #667eea; margin-bottom: 20px;">🚌 Conductor Login</h2>
+        <div id="loginError" class="alert alert-error hidden"></div>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" style="width: 100%;">Login</button>
+        </form>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="container hidden">
+        <div class="header">
+            <h1>🚌 Nazigi Stamford Bus - Conductor Panel</h1>
+            <button onclick="logout()" style="float: right; margin-top: -35px;">Logout</button>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Passengers</h3>
+                <div class="value" id="totalPassengers">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Opted In</h3>
+                <div class="value" id="optedIn">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Messages Sent</h3>
+                <div class="value" id="messagesSent">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Responses</h3>
+                <div class="value" id="totalResponses">0</div>
+            </div>
+        </div>
+
+        <!-- Send Message -->
+        <div class="card">
+            <h2>📤 Send Message to Passengers</h2>
+            <div id="sendMessageAlert" class="alert hidden"></div>
+            <form id="messageForm">
+                <div class="form-group">
+                    <label>Message Text</label>
+                    <textarea id="messageText" placeholder="Example: Nazigi Stamford bus is now leaving CBD heading to Kahawa West. Where would you like to be picked?" required></textarea>
+                </div>
+                <button type="submit" id="sendBtn">Send to All Opted-In Passengers</button>
+            </form>
+        </div>
+
+        <!-- Recent Responses -->
+        <div class="card">
+            <h2>📊 Recent Passenger Responses</h2>
+            <button onclick="loadResponses()" style="margin-bottom: 15px;">Refresh Responses</button>
+            <div id="stopSummary" class="stop-summary"></div>
+            <div id="responsesList" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        let authHeader = '';
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            authHeader = 'Basic ' + btoa(username + ':' + password);
+            
+            try {
+                const response = await fetch(`${API_BASE}/conductor/dashboard`, {
+                    headers: { 'Authorization': authHeader }
+                });
+                
+                if (response.ok) {
+                    document.getElementById('loginContainer').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    loadDashboard();
+                    loadResponses();
+                } else {
+                    showLoginError('Invalid credentials');
+                }
+            } catch (error) {
+                showLoginError('Connection error: ' + error.message);
+            }
+        });
+
+        function showLoginError(message) {
+            const errorDiv = document.getElementById('loginError');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+        }
+
+        function logout() {
+            authHeader = '';
+            document.getElementById('loginContainer').classList.remove('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('loginForm').reset();
+        }
+
+        // Load Dashboard Stats
+        async function loadDashboard() {
+            try {
+                const response = await fetch(`${API_BASE}/conductor/dashboard`, {
+                    headers: { 'Authorization': authHeader }
+                });
+                const data = await response.json();
+                
+                document.getElementById('totalPassengers').textContent = data.statistics.total_passengers;
+                document.getElementById('optedIn').textContent = data.statistics.opted_in;
+                document.getElementById('messagesSent').textContent = data.statistics.total_messages_sent;
+                document.getElementById('totalResponses').textContent = data.statistics.total_responses;
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
+        }
+
+        // Send Message
+        document.getElementById('messageForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const messageText = document.getElementById('messageText').value;
+            const sendBtn = document.getElementById('sendBtn');
+            
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Sending...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/conductor/send-message`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': authHeader
+                    },
+                    body: JSON.stringify({ message: messageText })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showAlert('sendMessageAlert', 'success', 
+                        `✅ Message sent successfully to ${data.recipients_count} passengers!`);
+                    document.getElementById('messageText').value = '';
+                    loadDashboard();
+                } else {
+                    showAlert('sendMessageAlert', 'error', 
+                        `❌ Error: ${data.error || 'Failed to send message'}`);
+                }
+            } catch (error) {
+                showAlert('sendMessageAlert', 'error', 
+                    `❌ Connection error: ${error.message}`);
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Send to All Opted-In Passengers';
+            }
+        });
+
+        // Load Responses
+        async function loadResponses() {
+            try {
+                const response = await fetch(`${API_BASE}/conductor/responses`, {
+                    headers: { 'Authorization': authHeader }
+                });
+                const data = await response.json();
+                
+                // Display stop summary
+                const summaryDiv = document.getElementById('stopSummary');
+                summaryDiv.innerHTML = '';
+                
+                for (const [stop, count] of Object.entries(data.stop_summary)) {
+                    summaryDiv.innerHTML += `
+                        <div class="stop-badge">
+                            <div class="stop-name">${stop}</div>
+                            <div class="stop-count">${count}</div>
+                        </div>
+                    `;
+                }
+                
+                // Display responses list
+                const listDiv = document.getElementById('responsesList');
+                listDiv.innerHTML = '<h3 style="margin-bottom: 10px;">Latest Responses</h3>';
+                
+                if (data.responses.length === 0) {
+                    listDiv.innerHTML += '<p style="color: #999;">No responses yet</p>';
+                } else {
+                    data.responses.forEach(r => {
+                        const date = new Date(r.responded_at).toLocaleString();
+                        listDiv.innerHTML += `
+                            <div class="response-item">
+                                <strong>${r.passenger_phone}</strong> selected 
+                                <strong style="color: #667eea;">${r.selected_stop || 'N/A'}</strong>
+                                <div class="time">${date}</div>
+                            </div>
+                        `;
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading responses:', error);
+            }
+        }
+
+        function showAlert(elementId, type, message) {
+            const alertDiv = document.getElementById(elementId);
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            alertDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                alertDiv.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Auto-refresh dashboard every 30 seconds
+        setInterval(() => {
+            if (!document.getElementById('dashboard').classList.contains('hidden')) {
+                loadDashboard();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

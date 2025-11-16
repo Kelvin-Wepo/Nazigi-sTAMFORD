@@ -1,0 +1,14 @@
+feat: initialize project scaffold and add base README
+feat: add Flask app factory, app.py and configuration handling
+feat: add config.py and environment variable support (.env integration)
+feat: implement SQLAlchemy models and Flask-Migrate setup
+feat: integrate AfricasTalking SMS service wrapper (sms_service)
+feat: add SMS callback routes and opt-in/opt-out flow (sms_routes)
+feat: add conductor admin routes with HTTP Basic Auth (conductor_routes)
+feat: add conductor dashboard template and client-side JS
+feat: add init_db script and database initialization logic
+test: add test scripts for SMS sending and quick integration checks
+fix: correct routes/__init__.py syntax error and package import issues
+fix: resolve database authentication and create nazigi_user with privileges
+chore: update AfricasTalking credentials, shortcode and sender ID in env
+perf/log: enhance SMS and route logging, add SMS delivery auditing and README updates

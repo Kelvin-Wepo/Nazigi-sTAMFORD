@@ -1,0 +1,14 @@
+*.pyc
+__pycache__/
+venv/
+env/
+.env
+*.db
+*.sqlite
+*.sqlite3
+.DS_Store
+.vscode/
+.idea/
+instance/
+migrations/versions/*.pyc
+*.log
