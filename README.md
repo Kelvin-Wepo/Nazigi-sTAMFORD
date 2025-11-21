@@ -52,7 +52,7 @@ Nazigi Stamford Bus SMS Service streamlines passenger pickup by allowing conduct
 
 | Feature | Description | SMS Command |
 |---------|-------------|-------------|
-| **Opt-in** | Register for bus updates | Send `STAMFORD` to `3854` |
+| **Opt-in** | Register for bus updates | Send `STAMFORD` to `20880` |
 | **Opt-out** | Unsubscribe from service | Send `STOP` or `NO` |
 | **Stop Selection** | Choose pickup location | Reply with `1-10` or stop name |
 | **Smart Parsing** | Flexible input recognition | `5`, `Zimmerman`, `zimmer` all work |
@@ -132,7 +132,7 @@ Nazigi/
 ```
 ┌─────────────────┐
 │   Passenger     │
-│  (SMS: 3854)    │
+│  (SMS: 20880)   │
 └────────┬────────┘
          │ 1. Sends "STAMFORD"
          ▼
@@ -365,7 +365,7 @@ Application will be accessible at:
 ```
 Username: sandbox
 API Key: [Get from Dashboard → Settings → API Key]
-Shortcode: Provided by AT (e.g., 3854)
+Shortcode: Provided by AT (e.g., 20880)
 ```
 
 **Production:**
@@ -462,7 +462,7 @@ response = requests.get(
 
 #### Step 1: Opt-In to Service
 
-**Action:** Send `STAMFORD` to shortcode `3854`
+**Action:** Send `STAMFORD` to shortcode `20880`
 
 **System Response:**
 ```
@@ -485,7 +485,7 @@ Thank you for opting in! ✅
 
 You will now receive updates from Nazigi Stamford Bus conductors.
 
-To opt out anytime, send STOP to 3854.
+To opt out anytime, send STOP to 20880.
 ```
 
 #### Step 3: Receive Bus Updates
@@ -533,7 +533,7 @@ Thank you for using Nazigi Stamford Bus Service!
 ```
 You have been opted out from Nazigi Stamford Bus Service.
 
-To opt in again, send STAMFORD to 3854.
+To opt in again, send STAMFORD to 20880.
 ```
 
 ---
@@ -720,7 +720,7 @@ text=STAMFORD
 linkId=SampleLinkId123
 date=2025-11-17 14:20:30
 id=ATXid_sample123
-to=3854
+to=20880
 ```
 
 **Supported Commands:**
@@ -1253,3 +1253,4 @@ AND p.id NOT IN (
 
 ---
 # Nazigi-sTAMFORD
+# NazigiAfrica
