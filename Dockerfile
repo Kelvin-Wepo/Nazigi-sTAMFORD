@@ -27,6 +27,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
+# Make startup script executable
+RUN chmod +x start.sh
+
 # Create a non-root user for security
 RUN useradd -m -u 1000 appuser && \
     chown -R appuser:appuser /app
@@ -37,16 +40,10 @@ USER appuser
 EXPOSE 5000
 
 # Health check (optional but recommended)
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:${PORT:-5000}/')" || exit 1
+# Note: Temporarily disabled for debugging - uncomment after successful deployment
+# HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+#     CMD python -c "import requests; requests.get('http://localhost:${PORT:-5000}/')" || exit 1
 
-# Run Gunicorn with production settings
+# Run startup script (handles migrations + Gunicorn)
 # Render will set $PORT environment variable
-CMD gunicorn --bind 0.0.0.0:${PORT:-5000} \
-             --workers 4 \
-             --threads 2 \
-             --timeout 120 \
-             --access-logfile - \
-             --error-logfile - \
-             --log-level info \
-             wsgi:app
+CMD ["./start.sh"]

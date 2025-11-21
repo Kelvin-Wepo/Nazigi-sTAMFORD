@@ -5,11 +5,28 @@ from models import db
 from sms_service import sms_service
 from routes.sms_routes import sms_bp
 from routes.conductor_routes import conductor_bp
+import logging
+import os
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 def create_app(config_class=Config):
     """Application factory for creating Flask app"""
+    logger.info("🚀 Starting Nazigi Stamford Bus SMS Service...")
+    
     app = Flask(__name__)
     app.config.from_object(config_class)
+    
+    # Log configuration (hide sensitive data)
+    db_url = app.config['SQLALCHEMY_DATABASE_URI']
+    logger.info(f"📊 Database: {db_url[:20]}...{db_url[-20:] if len(db_url) > 40 else ''}")
+    logger.info(f"🔑 AT Username: {app.config['AT_USERNAME']}")
+    logger.info(f"🌍 Environment: {os.getenv('FLASK_ENV', 'development')}")
     
     # Add Content Security Policy for inline scripts
     @app.after_request
@@ -18,20 +35,32 @@ def create_app(config_class=Config):
         return response
     
     # Initialize extensions
+    logger.info("📦 Initializing database...")
     db.init_app(app)
     migrate = Migrate(app, db)
+    logger.info("✅ Database initialized")
     
     # Initialize SMS service
-    with app.app_context():
-        sms_service.initialize(
-            app.config['AT_USERNAME'],
-            app.config['AT_API_KEY'],
-            app.config.get('AT_SENDER_ID')
-        )
+    try:
+        logger.info("📱 Initializing SMS service...")
+        with app.app_context():
+            sms_service.initialize(
+                app.config['AT_USERNAME'],
+                app.config['AT_API_KEY'],
+                app.config.get('AT_SENDER_ID')
+            )
+        logger.info("✅ SMS service initialized")
+    except Exception as e:
+        logger.error(f"❌ SMS service initialization failed: {e}")
+        logger.warning("⚠️  Continuing without SMS service...")
     
     # Register blueprints
+    logger.info("🔌 Registering blueprints...")
     app.register_blueprint(sms_bp)
     app.register_blueprint(conductor_bp)
+    logger.info("✅ Blueprints registered")
+    
+    logger.info("🎉 Application successfully created!")
     
     # Web interface routes
     @app.route('/')
@@ -88,7 +117,19 @@ def create_app(config_class=Config):
     
     @app.route('/health')
     def health():
-        return {'status': 'healthy'}
+        try:
+            # Test database connection
+            from sqlalchemy import text
+            db.session.execute(text('SELECT 1'))
+            db_status = 'connected'
+        except Exception as e:
+            logger.error(f"Health check DB error: {e}")
+            db_status = 'disconnected'
+        
+        return {
+            'status': 'healthy',
+            'database': db_status
+        }
     
     @app.route('/api')
     def api_info():
