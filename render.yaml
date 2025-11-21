@@ -1,0 +1,50 @@
+# Render Blueprint for Nazigi Stamford Bus SMS Service
+# This file allows one-click deployment on Render
+# https://render.com/docs/blueprint-spec
+
+services:
+  # PostgreSQL Database
+  - type: pserv
+    name: nazigi-postgres
+    env: docker
+    plan: free
+    region: oregon
+    databases:
+      - name: nazigi_sms
+        user: nazigi_user
+        plan: free
+
+  # Flask Web Service
+  - type: web
+    name: nazigi-stamford-sms
+    env: docker
+    region: oregon
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: DEBUG
+        value: false
+      - key: PYTHONUNBUFFERED
+        value: 1
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nazigi-postgres
+          property: connectionString
+      # These must be added manually in Render dashboard for security
+      - key: SECRET_KEY
+        generateValue: true
+      - key: AT_USERNAME
+        sync: false
+      - key: AT_API_KEY
+        sync: false
+      - key: AT_SHORTCODE
+        sync: false
+      - key: AT_SENDER_ID
+        sync: false
+      - key: CONDUCTOR_USERNAME
+        sync: false
+      - key: CONDUCTOR_PASSWORD
+        sync: false
