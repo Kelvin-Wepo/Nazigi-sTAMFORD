@@ -62,13 +62,26 @@ def sms_callback():
             current_app.logger.info(f"🎯 Detected keyword: TEST2 - routing to opt-in handler")
             return handle_opt_in_request(from_number, passenger)
         
-        # Handle opt-in confirmation
-        elif text.lower() in ['yes', 'y', 'opt in', 'optin', '1']:
+        # If passenger is NOT opted in yet, treat "1" and "2" as opt-in/opt-out responses
+        if passenger and passenger.opted_in == False:
+            # Handle opt-in confirmation for pending passengers
+            if text.strip() == '1' or text.lower() in ['yes', 'y', 'opt in', 'optin']:
+                current_app.logger.info(f"✅ Pending passenger confirming opt-in - routing to confirmation handler")
+                return handle_opt_in_confirmation(from_number, passenger)
+            
+            # Handle opt-out for pending passengers
+            elif text.strip() == '2' or text.lower() in ['no', 'n', 'opt out', 'optout', 'stop']:
+                current_app.logger.info(f"🚫 Pending passenger declining - routing to opt-out handler")
+                return handle_opt_out(from_number, passenger)
+        
+        # If passenger IS opted in, handle stop selection and other commands
+        # Handle opt-in confirmation for already registered users
+        if text.lower() in ['yes', 'y', 'opt in', 'optin']:
             current_app.logger.info(f"✅ Detected opt-in confirmation - routing to confirmation handler")
             return handle_opt_in_confirmation(from_number, passenger)
         
         # Handle opt-out
-        elif text.lower() in ['no', 'n', 'opt out', 'optout', 'stop', '2']:
+        elif text.lower() in ['no', 'n', 'opt out', 'optout', 'stop']:
             current_app.logger.info(f"🚫 Detected opt-out - routing to opt-out handler")
             return handle_opt_out(from_number, passenger)
         
