@@ -13,7 +13,7 @@
 ### Accounts Required
 - [ ] AfricasTalking account created
 - [ ] AfricasTalking API credentials obtained
-- [ ] SMS shortcode (2045) configured
+- [ ] SMS shortcode (20880) configured
 - [ ] Domain name (optional but recommended)
 
 ---
@@ -98,7 +98,7 @@ Update these values:
 ```env
 AT_USERNAME=your_africastalking_username
 AT_API_KEY=your_africastalking_api_key
-AT_SHORTCODE=2045
+AT_SHORTCODE=20880
 
 DATABASE_URL=postgresql://nazigi_user:your_secure_password_here@localhost:5432/nazigi_sms
 
@@ -149,7 +149,7 @@ Press Ctrl+C to stop the test server.
 - [ ] Logged in to africastalking.com
 
 ### 4.2 Configure Shortcode
-- [ ] Shortcode 2045 is active
+- [ ] Shortcode 20880 is active
 - [ ] Shortcode is assigned to your account
 
 ### 4.3 Set SMS Callback URL
@@ -305,14 +305,14 @@ Follow prompts and select option 2 (redirect HTTP to HTTPS)
 
 **Test 1: Opt-In**
 ```
-Send SMS: "stamford" to 2045
+Send SMS: "stamford" to 20880
 Expected: Welcome message with opt-in options
 ```
 - [ ] Received welcome message
 
 **Test 2: Confirm Opt-In**
 ```
-Send SMS: "YES" to 2045
+Send SMS: "YES" to 20880
 Expected: Confirmation message
 ```
 - [ ] Received confirmation
@@ -329,7 +329,7 @@ Expected: Receive SMS with stop list
 
 **Test 4: Stop Selection**
 ```
-Send SMS: "5" to 2045
+Send SMS: "5" to 20880
 Expected: Confirmation of stop selection
 ```
 - [ ] Received stop confirmation
@@ -337,7 +337,7 @@ Expected: Confirmation of stop selection
 
 **Test 5: Opt-Out**
 ```
-Send SMS: "STOP" to 2045
+Send SMS: "STOP" to 20880
 Expected: Opt-out confirmation
 ```
 - [ ] Received opt-out confirmation
