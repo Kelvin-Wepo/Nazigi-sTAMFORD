@@ -12,7 +12,10 @@ def check_auth(username, password):
 
 def authenticate():
     """Send 401 response for failed authentication"""
-    return jsonify({'error': 'Authentication required'}), 401
+    from flask import make_response
+    response = make_response(jsonify({'error': 'Authentication required'}), 401)
+    response.headers['WWW-Authenticate'] = 'Basic realm="Nazigi Stamford Bus - Conductor Login"'
+    return response
 
 def requires_auth(f):
     """Decorator for routes that require authentication"""
@@ -222,7 +225,20 @@ def get_messages():
 @conductor_bp.route('/conductor/dashboard', methods=['GET'])
 @requires_auth
 def dashboard():
-    """Get dashboard statistics"""
+    """Get dashboard HTML page"""
+    try:
+        from flask import render_template
+        # Always return HTML page for GET requests
+        return render_template('conductor.html')
+        
+    except Exception as e:
+        current_app.logger.error(f"Error getting dashboard: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@conductor_bp.route('/conductor/api/stats', methods=['GET'])
+@requires_auth
+def dashboard_stats():
+    """Get dashboard statistics as JSON"""
     try:
         total_passengers = Passenger.query.count()
         opted_in = Passenger.query.filter_by(opted_in=True).count()
@@ -251,5 +267,5 @@ def dashboard():
         })
         
     except Exception as e:
-        current_app.logger.error(f"Error getting dashboard: {str(e)}")
+        current_app.logger.error(f"Error getting dashboard stats: {str(e)}")
         return jsonify({'error': str(e)}), 500
