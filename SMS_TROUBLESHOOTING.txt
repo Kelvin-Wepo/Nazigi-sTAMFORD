@@ -1,0 +1,134 @@
+🚨 SMS NOT WORKING - QUICK FIX CHECKLIST
+==========================================
+
+Current Status:
+- ✅ Flask app is running (port 5000)
+- ✅ Ngrok tunnel is active
+- ✅ Callback endpoint works locally
+- ❓ Responses not being sent
+
+🔧 IMMEDIATE FIXES NEEDED:
+
+1. SET CALLBACK URL IN AFRICASTALKING
+   =====================================
+   ⚠️ THIS IS THE MOST COMMON ISSUE!
+   
+   Steps:
+   a) Go to: https://account.africastalking.com/
+   b) Navigate to: SMS → Settings → Callback URL
+   c) Set URL to: https://044ad3cea41b.ngrok-free.app/sms/callback
+   d) Method: POST
+   e) Click "Save"
+   
+   📌 Without this, AfricasTalking won't forward SMS to your server!
+
+2. WHITELIST YOUR PHONE NUMBER (Sandbox Only)
+   ============================================
+   If using sandbox:
+   a) Go to: https://account.africastalking.com/sandbox
+   b) Click "Phone Numbers"
+   c) Add your phone number
+   d) Verify it
+   
+3. FIX SHORTCODE MISMATCH
+   =======================
+   Your .env shows: AT_SHORTCODE=3854
+   You mentioned: My shortcode is 20880
+   
+   Which one is correct?
+   - For SANDBOX: Use the shortcode AT gives you (usually 3854 or similar)
+   - For LIVE: Use your purchased shortcode (20880)
+   
+   To fix:
+   - Edit .env and set correct shortcode
+   - Restart Flask app
+   - Tell passengers to send to the CORRECT shortcode
+
+4. VERIFY CREDENTIALS
+   ===================
+   Run this command to test:
+   
+   cd /home/subchief/Nazigi
+   python3 diagnose_sms.py
+   
+   This will:
+   - Test your AT credentials
+   - Try sending a test SMS
+   - Show detailed error messages
+
+5. CHECK AFRICASTALKING LOGS
+   ===========================
+   Go to: https://account.africastalking.com/sms/logs
+   
+   Look for:
+   - Incoming messages from your number
+   - Outgoing responses
+   - Any error messages
+
+📊 TESTING FLOW:
+
+After fixing above issues, test:
+
+1. Send "STAMFORD" to shortcode 3854 (or 20880)
+2. Check Flask terminal for logs showing:
+   📥 ========== INCOMING SMS ==========
+   📱 From: +254XXXXXXXXX
+   💬 Text: STAMFORD
+   
+3. You should see response being sent:
+   📤 Attempting to send SMS to: ['+254XXXXXXXXX']
+   ✅ SMS successfully sent to +254XXXXXXXXX
+
+4. Check your phone for reply
+
+🔍 COMMON ISSUES & SOLUTIONS:
+
+Issue: "No incoming SMS in Flask logs"
+→ Solution: Callback URL not set or wrong in AT dashboard
+
+Issue: "Incoming SMS logged, but no response sent"
+→ Solution: Check AT credentials, run diagnose_sms.py
+
+Issue: "Status Code 406 (Blacklist)"
+→ Solution: Add phone to sandbox whitelist
+
+Issue: "Status Code 401 (Unauthorized)"
+→ Solution: Wrong API key - check .env file
+
+Issue: "Response sent (Status 100) but not received"
+→ Solution: 
+  - Wait 1-2 minutes (can be delayed)
+  - Check phone signal
+  - Verify sender ID is approved by AT
+
+📱 QUICK TEST COMMANDS:
+
+# Test local callback
+curl -X POST http://localhost:5000/sms/callback \
+  -d "from=+254711082300" \
+  -d "text=STAMFORD" \
+  -d "to=3854"
+
+# Test SMS sending
+python3 diagnose_sms.py
+
+# Check Flask logs (in terminal where app runs)
+# Look for emoji logs: 📥 📤 ✅ ❌
+
+🌐 IMPORTANT URLS:
+
+- AT Dashboard: https://account.africastalking.com/
+- SMS Settings: https://account.africastalking.com/sms/settings
+- SMS Logs: https://account.africastalking.com/sms/logs
+- Sandbox: https://account.africastalking.com/sandbox
+- Your Callback: https://044ad3cea41b.ngrok-free.app/sms/callback
+
+⚡ NEXT STEPS:
+
+1. Fix callback URL in AT dashboard (MOST IMPORTANT!)
+2. Run: python3 diagnose_sms.py
+3. Send test SMS to correct shortcode
+4. Check Flask logs for emoji debugging
+5. If still failing, check SMS logs in AT dashboard
+
+Need help? Check the Flask terminal output for detailed logs!
