@@ -1,0 +1,66 @@
+# Docker Compose for Local Development
+# Nazigi Stamford Bus SMS Service
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:14-alpine
+    container_name: nazigi_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nazigi_user
+      POSTGRES_PASSWORD: nazigi2025
+      POSTGRES_DB: nazigi_sms
+    ports:
+      - "5433:5432"  # Use port 5433 on host to avoid conflict with local PostgreSQL
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nazigi_user -d nazigi_sms"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Flask Application
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nazigi_flask
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      # Override these with your actual values in .env
+      PORT: 5000
+      FLASK_ENV: development
+      DATABASE_URL: postgresql://nazigi_user:nazigi2025@db:5432/nazigi_sms
+    env_file:
+      - .env
+    volumes:
+      # Mount code for hot-reload during development
+      - .:/app
+      # Exclude venv to avoid conflicts
+      - /app/venv
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "
+        echo 'Waiting for database...' &&
+        sleep 5 &&
+        echo 'Running database migrations...' &&
+        python init_db.py &&
+        echo 'Starting application...' &&
+        gunicorn --bind 0.0.0.0:5000 --workers 2 --threads 2 --timeout 120 --reload --access-logfile - --error-logfile - --log-level debug wsgi:app
+      "
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  default:
+    name: nazigi_network
