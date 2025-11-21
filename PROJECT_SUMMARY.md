@@ -42,7 +42,7 @@ Nazigi/
 ## 🎯 Key Features Implemented
 
 ### 1. **Passenger Management**
-✅ Opt-in by sending "STAMFORD" to 2045  
+✅ Opt-in by sending "STAMFORD" to 20880  
 ✅ Opt-out anytime by sending "STOP"  
 ✅ Automatic phone number normalization  
 ✅ Confirmation messages for all actions  
@@ -80,7 +80,7 @@ Nazigi/
 
 ### Passenger Flow
 ```
-1. Send "STAMFORD" to 2045
+1. Send "STAMFORD" to 20880
    ↓
 2. Receive opt-in/opt-out question
    ↓
@@ -217,7 +217,7 @@ Required in `.env`:
 # AfricasTalking
 AT_USERNAME=your_africastalking_username
 AT_API_KEY=your_api_key
-AT_SHORTCODE=2045
+AT_SHORTCODE=20880
 
 # Database
 DATABASE_URL=postgresql://user:pass@localhost/nazigi_sms
@@ -234,7 +234,7 @@ CONDUCTOR_PASSWORD=secure_password
 
 1. **Create Account** at africastalking.com
 2. **Get API Credentials** from dashboard
-3. **Configure Shortcode** (2045)
+3. **Configure Shortcode** (20880)
 4. **Set Callback URL**: `https://your-domain.com/sms/callback`
 5. **Test in Sandbox** first
 6. **Go Live** when ready
@@ -401,7 +401,7 @@ This implementation demonstrates professional software development:
 
 Before going live:
 - [ ] AfricasTalking account verified and funded
-- [ ] Shortcode (2045) activated
+- [ ] Shortcode (20880) activated
 - [ ] Callback URL configured
 - [ ] SSL certificate installed
 - [ ] Strong passwords set
