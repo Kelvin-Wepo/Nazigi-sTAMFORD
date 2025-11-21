@@ -12,3 +12,8 @@ env/
 instance/
 migrations/versions/*.pyc
 *.log
+
+# Docker
+*.log
+.docker/
+postgres_data/
