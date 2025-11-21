@@ -1,0 +1,116 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+*.out
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Documentation
+docs/_build/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docker
+docker-compose.yml
+docker-compose.*.yml
+Dockerfile
+.dockerignore
+
+# Misc
+README.md
+*.md
+LICENSE
+.editorconfig
+
+# Migrations (optional - uncomment if you want to generate migrations on Render)
+# migrations/
+
+# Temporary files
+*.tmp
+temp/
+tmp/
+
+# Node modules (if any frontend assets)
+node_modules/
+npm-debug.log
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Backup files
+*.bak
+*.backup
+
+# Local test scripts
+test_*.py
+*_test.py
+debug_*.py
+diagnose_*.py
+clear_database.py
+view_passengers.py
+verify_config.py
+test_optin_flow.py
+test_complete_flow.py
+test_sender_id.py
+test_callback.py
+test_flow_fixed.py
+test_no_sender.py
+
+# Documentation and guides
+*.txt
+!requirements.txt
