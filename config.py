@@ -14,10 +14,10 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # AfricasTalking
-    AT_USERNAME = os.getenv('AT_USERNAME', 'sandbox')
+    AT_USERNAME = os.getenv('AT_USERNAME', 'Kwepo')
     AT_API_KEY = os.getenv('AT_API_KEY')
-    AT_SHORTCODE = os.getenv('AT_SHORTCODE', '3854')
-    AT_SENDER_ID = os.getenv('AT_SENDER_ID', 'AFTKNG')
+    AT_SHORTCODE = os.getenv('AT_SHORTCODE', '20384')
+    AT_SENDER_ID = os.getenv('AT_SENDER_ID', None)  # No default - let AT use default sender
     
     # Conductor credentials
     CONDUCTOR_USERNAME = os.getenv('CONDUCTOR_USERNAME', 'admin')

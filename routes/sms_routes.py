@@ -58,8 +58,8 @@ def sms_callback():
             current_app.logger.info(f"👤 New passenger, not in database yet")
         
         # Handle opt-in request
-        if text.lower() == 'stamford':
-            current_app.logger.info(f"🎯 Detected keyword: STAMFORD - routing to opt-in handler")
+        if text.lower() == 'test2':
+            current_app.logger.info(f"🎯 Detected keyword: TEST2 - routing to opt-in handler")
             return handle_opt_in_request(from_number, passenger)
         
         # Handle opt-in confirmation
@@ -101,11 +101,11 @@ def handle_opt_in_request(phone_number, passenger):
             current_app.logger.info(f"👤 Existing passenger found: {phone_number}")
         
         # Send opt-in/opt-out question
-        message = ("Welcome to Nazigi Stamford Bus Service! 🚌\n\n"
-                  "Would you like to receive updates about bus locations and pickup points?\n\n"
+        message = ("Welcome to Nazigi Stamford! 🚌\n\n"
+                  "Would you like to opt?\n\n"
                   "Reply:\n"
-                  "1 or YES to Opt In\n"
-                  "2 or NO to Opt Out")
+                  "1 to Opt In\n"
+                  "2 to Opt Out")
         
         current_app.logger.info(f"📲 Sending opt-in message to {phone_number}")
         response = sms_service.send_sms(phone_number, message)
@@ -134,7 +134,7 @@ def handle_opt_in_confirmation(phone_number, passenger):
         
         message = ("Thank you for opting in! ✅\n\n"
                   "You will now receive updates from Nazigi Stamford Bus conductors.\n\n"
-                  "To opt out anytime, send STOP to 2045.")
+                  "To opt out anytime, send STOP to 20384.")
         
         current_app.logger.info(f"📲 Sending confirmation message to {phone_number}")
         response = sms_service.send_sms(phone_number, message)
@@ -157,7 +157,7 @@ def handle_opt_out(phone_number, passenger):
             current_app.logger.info(f"👤 Passenger {phone_number} opted out")
             
             message = ("You have been opted out from Nazigi Stamford Bus Service.\n\n"
-                      "To opt in again, send STAMFORD to 2045.")
+                      "To opt in again, send TEST2 to 20384.")
         else:
             current_app.logger.info(f"👤 Passenger {phone_number} not registered")
             message = "You are not registered in our service."
@@ -179,7 +179,7 @@ def handle_stop_selection(phone_number, passenger, stop_number):
         
         if not passenger or not passenger.opted_in:
             current_app.logger.warning(f"⚠️ Passenger {phone_number} not opted in, rejecting stop selection")
-            message = "Please opt in first by sending STAMFORD to 2045."
+            message = "Please opt in first by sending TEST2 to 20384."
             sms_service.send_sms(phone_number, message)
             return jsonify({'status': 'error', 'message': 'User not opted in'})
         
@@ -218,7 +218,7 @@ def handle_stop_name_selection(phone_number, passenger, text):
     """Handle when passenger types stop name"""
     try:
         if not passenger or not passenger.opted_in:
-            message = "Please opt in first by sending STAMFORD to 2045."
+            message = "Please opt in first by sending TEST2 to 20384."
             sms_service.send_sms(phone_number, message)
             return jsonify({'status': 'error', 'message': 'User not opted in'})
         
