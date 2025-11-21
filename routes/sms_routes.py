@@ -114,7 +114,7 @@ def handle_opt_in_request(phone_number, passenger):
             current_app.logger.info(f"👤 Existing passenger found: {phone_number}")
         
         # Send opt-in/opt-out question
-        message = ("Welcome to Nazigi Stamford! 🚌\n\n"
+        message = ("Welcome to Nazigi Stamford! \n\n"
                   "Would you like to opt?\n\n"
                   "Reply:\n"
                   "1 to Opt In\n"
@@ -145,7 +145,7 @@ def handle_opt_in_confirmation(phone_number, passenger):
         
         db.session.commit()
         
-        message = ("Thank you for opting in! ✅\n\n"
+        message = ("Thank you for opting in! \n\n"
                   "You will now receive updates from Nazigi Stamford Bus conductors.\n\n"
                   "To opt out anytime, send STOP to 20384.")
         
