@@ -1,0 +1,85 @@
+🚌 NAZIGI STAMFORD BUS SMS SERVICE - CONFIGURATION
+═══════════════════════════════════════════════════════════
+
+📱 AFRICASTALKING CREDENTIALS
+────────────────────────────────────────────────────────────
+Username:    Kwepo
+Shortcode:   20384
+Sender ID:   20880
+Keyword:     Test2 (case-insensitive: test2, TEST2, Test2)
+
+🔧 SETUP CHECKLIST
+────────────────────────────────────────────────────────────
+✅ .env updated with AT_SHORTCODE=20384 and AT_SENDER_ID=20880
+✅ config.py default shortcode updated to 20384
+✅ routes/sms_routes.py keyword changed from 'stamford' to 'test2'
+✅ All shortcode references updated to 20384
+✅ Flask app restarted and running
+
+🌐 CALLBACK URL
+────────────────────────────────────────────────────────────
+Set this in AfricasTalking SMS Settings:
+https://a292fa9916aa.ngrok-free.app/sms/callback
+
+⚠️  Note: Update this URL in AfricasTalking dashboard whenever ngrok restarts
+
+📲 USER REGISTRATION FLOW
+────────────────────────────────────────────────────────────
+1. Passenger sends: TEST2 to 20384
+   → Receives welcome message with opt-in/opt-out options
+
+2. Passenger replies: YES or 1
+   → Registered and opted-in
+   → Receives confirmation message
+
+3. Passenger can opt out: STOP or NO or 2
+   → Marked as opted-out
+   → Receives opt-out confirmation
+
+4. To re-register: Send TEST2 to 20384
+
+🧪 TESTING COMMANDS
+────────────────────────────────────────────────────────────
+# Test opt-in flow locally
+python test_optin_flow.py
+
+# View registered passengers
+python view_passengers.py
+
+# Clear database (reset)
+python clear_database.py
+
+# Test callback endpoint
+python test_callback.py
+
+📝 PASSENGER COMMANDS
+────────────────────────────────────────────────────────────
+TEST2            → Start registration/opt-in
+YES / 1          → Confirm opt-in
+NO / 2 / STOP    → Opt-out
+1-10             → Select bus stop by number
+[stop name]      → Select bus stop by name
+
+🚦 STATUS
+────────────────────────────────────────────────────────────
+✅ Flask app running on port 5000
+✅ Ngrok tunnel active
+✅ Database cleared and ready
+✅ Configuration updated
+⏳ Waiting for callback URL to be set in AfricasTalking dashboard
+
+🔍 NEXT STEPS
+────────────────────────────────────────────────────────────
+1. Go to: https://account.africastalking.com/sms/settings
+2. Set "Callback URL" to: https://a292fa9916aa.ngrok-free.app/sms/callback
+3. Set "HTTP Method" to: POST
+4. Save settings
+5. Test by sending "TEST2" to 20384 from your phone
+6. Check Flask logs for emoji indicators
+7. Verify SMS delivery on your phone
+
+📊 MONITORING
+────────────────────────────────────────────────────────────
+Flask Logs:      Check terminal for emoji indicators
+AT Dashboard:    SMS Logs → Incoming/Outgoing tabs
+Database Check:  python view_passengers.py

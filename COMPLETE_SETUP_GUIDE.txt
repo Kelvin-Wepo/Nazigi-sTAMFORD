@@ -1,0 +1,351 @@
+🚌 NAZIGI STAMFORD BUS - COMPLETE SETUP GUIDE
+═══════════════════════════════════════════════════════════════
+
+✅ CURRENT CONFIGURATION
+────────────────────────────────────────────────────────────────
+Keyword:     TEXT2
+Shortcode:   20384
+Sender ID:   AFTKNG
+Username:    Kwepo
+
+═══════════════════════════════════════════════════════════════
+📱 PART 1: PASSENGER REGISTRATION FLOW
+═══════════════════════════════════════════════════════════════
+
+STEP 1: PASSENGER SENDS KEYWORD
+────────────────────────────────────────────────────────────────
+Passenger texts: TEXT2
+To shortcode:    20384
+
+→ System receives SMS at callback URL
+
+
+STEP 2: SYSTEM SENDS WELCOME MESSAGE
+────────────────────────────────────────────────────────────────
+Passenger receives:
+
+    Welcome to Nazigi Stamford! 🚌
+    
+    Would you like to opt?
+    
+    Reply:
+    1 to Opt In
+    2 to Opt Out
+
+
+STEP 3A: PASSENGER OPTS IN (Press 1)
+────────────────────────────────────────────────────────────────
+Passenger replies: 1 (or YES, Y, OPT IN)
+
+→ System marks passenger as opted-in in database
+→ Passenger receives confirmation:
+
+    Thank you for opting in! ✅
+    
+    You will now receive updates from Nazigi Stamford Bus conductors.
+    
+    To opt out anytime, send STOP to 20384.
+
+
+STEP 3B: PASSENGER OPTS OUT (Press 2)
+────────────────────────────────────────────────────────────────
+Passenger replies: 2 (or NO, N, OPT OUT, STOP)
+
+→ System marks passenger as opted-out in database
+→ Passenger receives:
+
+    You have been opted out from Nazigi Stamford Bus Service.
+    
+    To opt in again, send TEST2 to 20384.
+
+
+═══════════════════════════════════════════════════════════════
+🎛️ PART 2: CONDUCTOR SENDING MESSAGES
+═══════════════════════════════════════════════════════════════
+
+ACCESS CONDUCTOR DASHBOARD
+────────────────────────────────────────────────────────────────
+1. Open browser
+2. Go to: http://localhost:5000/conductor/dashboard
+   (or http://YOUR_IP:5000/conductor/dashboard)
+3. Login:
+   Username: admin
+   Password: admin123
+
+
+SEND MESSAGE TO PASSENGERS
+────────────────────────────────────────────────────────────────
+1. In the dashboard, type your message:
+
+   "Nazigi stamford is leaving Nairobi CBD now where should we pick you?"
+
+2. Click "Send Message"
+
+3. System automatically adds stop selection menu
+
+
+WHAT PASSENGERS RECEIVE
+────────────────────────────────────────────────────────────────
+Nazigi stamford is leaving Nairobi CBD now where should we pick you?
+
+Please reply with the number of your preferred stop:
+
+1. 🚏 Ngara
+2. 🚏 Allsops
+3. 🚏 Homeland
+4. 🚏 TRM
+5. 🚏 Zimmerman
+6. 🚏 Githurai 44
+7. 🚏 Maziwa
+8. 🚏 Kijito
+9. 🚏 Kamiti
+10. 🚏 Kahawa West Rounda
+
+Reply with the number or name of your preferred stop.
+
+
+═══════════════════════════════════════════════════════════════
+📊 PART 3: VIEWING PASSENGER RESPONSES
+═══════════════════════════════════════════════════════════════
+
+ON CONDUCTOR DASHBOARD
+────────────────────────────────────────────────────────────────
+1. Click "View Responses" tab
+2. You will see:
+   - Total passengers who responded
+   - Breakdown by stop:
+     * Ngara: 3 passengers
+     * Allsops: 2 passengers
+     * Zimmerman: 8 passengers
+     * etc.
+   - Individual responses with phone numbers and timestamps
+   - Which passengers haven't responded yet
+
+
+REAL-TIME TRACKING
+────────────────────────────────────────────────────────────────
+✅ As passengers reply (1-10 or stop names)
+✅ System updates dashboard automatically
+✅ You see exactly who wants to be picked up where
+✅ You can plan your route efficiently
+
+
+═══════════════════════════════════════════════════════════════
+🔧 PART 4: AFRICASTALKING CONFIGURATION
+═══════════════════════════════════════════════════════════════
+
+CRITICAL: SET CALLBACK URL
+────────────────────────────────────────────────────────────────
+1. Login to AfricasTalking Dashboard
+   https://account.africastalking.com/
+
+2. Navigate to: SMS → Settings → Callback URL
+
+3. Set "Incoming Messages Callback URL" to:
+   https://YOUR_NGROK_URL/sms/callback
+   
+   Example: https://a292fa9916aa.ngrok-free.app/sms/callback
+
+4. HTTP Method: POST
+
+5. Click "Save"
+
+
+GET YOUR NGROK URL
+────────────────────────────────────────────────────────────────
+If you're using ngrok (for testing):
+
+1. Make sure ngrok is running:
+   Terminal: ngrok http 5000
+
+2. Copy the HTTPS URL shown (e.g., https://abc123.ngrok-free.app)
+
+3. Add /sms/callback to the end
+
+4. Paste in AfricasTalking dashboard
+
+
+VERIFY KEYWORD SETUP
+────────────────────────────────────────────────────────────────
+In AfricasTalking Dashboard:
+
+1. Go to: SMS → Keywords
+2. Check that TEXT2 is registered to shortcode 20384
+3. Callback URL should match your ngrok/production URL
+
+
+CHECK ACCOUNT BALANCE
+────────────────────────────────────────────────────────────────
+⚠️  IMPORTANT: You need sufficient balance to send SMS!
+
+1. Go to: Dashboard → Account Balance
+2. If balance is low, click "Top Up"
+3. Add at least KES 500 for testing
+4. Each SMS costs ~KES 0.80-1.60
+
+
+═══════════════════════════════════════════════════════════════
+🧪 PART 5: TESTING THE COMPLETE FLOW
+═══════════════════════════════════════════════════════════════
+
+TEST 1: PASSENGER REGISTRATION
+────────────────────────────────────────────────────────────────
+1. From your phone, send: TEXT2
+   To: 20384
+
+2. You should receive:
+   "Welcome to Nazigi Stamford! 🚌
+    Would you like to opt?
+    Reply: 1 to Opt In, 2 to Opt Out"
+
+3. Reply: 1
+
+4. You should receive:
+   "Thank you for opting in! ✅..."
+
+5. Check conductor dashboard → should see 1 passenger
+
+
+TEST 2: CONDUCTOR SENDS MESSAGE
+────────────────────────────────────────────────────────────────
+1. Login to conductor dashboard
+
+2. Send message:
+   "Nazigi stamford is leaving Nairobi CBD now where should we pick you?"
+
+3. Your phone should receive the message with stop options
+
+4. Reply with: 5 (for Zimmerman)
+
+5. You should receive:
+   "✅ Confirmed! You will be picked up at Zimmerman."
+
+
+TEST 3: VIEW RESPONSES
+────────────────────────────────────────────────────────────────
+1. In conductor dashboard, click "View Responses"
+
+2. You should see:
+   - Your phone number
+   - Selected stop: Zimmerman
+   - Timestamp
+   - Response breakdown by stop
+
+
+═══════════════════════════════════════════════════════════════
+🚀 PART 6: STARTING THE SYSTEM
+═══════════════════════════════════════════════════════════════
+
+START FLASK APP
+────────────────────────────────────────────────────────────────
+cd /home/subchief/Nazigi
+source venv/bin/activate
+python3 app.py
+
+→ Flask running on port 5000
+
+
+START NGROK (for testing)
+────────────────────────────────────────────────────────────────
+In separate terminal:
+ngrok http 5000
+
+→ Copy the HTTPS URL
+→ Update in AfricasTalking dashboard
+
+
+VERIFY EVERYTHING IS RUNNING
+────────────────────────────────────────────────────────────────
+✅ Flask app running (terminal shows "Running on...")
+✅ Ngrok tunnel active (shows public URL)
+✅ Callback URL set in AfricasTalking
+✅ Account has balance
+✅ Database is initialized
+
+
+═══════════════════════════════════════════════════════════════
+📋 PART 7: FEATURES SUMMARY
+═══════════════════════════════════════════════════════════════
+
+FOR PASSENGERS
+────────────────────────────────────────────────────────────────
+✅ Register by texting TEXT2 to 20384
+✅ Opt in/out with 1 or 2
+✅ Receive bus location updates
+✅ Select pickup stop (1-10 or stop name)
+✅ Get confirmation of pickup location
+✅ Can opt out anytime
+
+
+FOR CONDUCTORS (Dashboard)
+────────────────────────────────────────────────────────────────
+✅ Send bulk messages to all opted-in passengers
+✅ Messages automatically include stop selection menu
+✅ View all registered passengers
+✅ See who's opted in vs opted out
+✅ Track responses in real-time
+✅ See response breakdown by stop
+✅ View message history
+✅ See analytics (total passengers, opt-in rate, etc.)
+
+
+SYSTEM CAPABILITIES
+────────────────────────────────────────────────────────────────
+✅ Two-way SMS communication
+✅ 10 designated bus stops
+✅ Real-time response tracking
+✅ Comprehensive analytics
+✅ Handles hundreds of passengers
+✅ Smart stop name matching (fuzzy search)
+✅ Complete audit trail (SMS logs)
+✅ Automatic phone number normalization
+
+
+═══════════════════════════════════════════════════════════════
+🆘 TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+PASSENGER NOT RECEIVING SMS
+────────────────────────────────────────────────────────────────
+1. Check AfricasTalking account balance (Status Code 405 = no balance)
+2. Verify callback URL is set correctly
+3. Check Flask logs for errors
+4. Verify sender ID AFTKNG is approved
+
+
+RESPONSES NOT SHOWING IN DASHBOARD
+────────────────────────────────────────────────────────────────
+1. Check Flask terminal for incoming SMS logs
+2. Verify passenger is opted-in
+3. Refresh dashboard page
+4. Check database: python view_passengers.py
+
+
+KEYWORD NOT WORKING
+────────────────────────────────────────────────────────────────
+1. Verify TEXT2 is registered in AfricasTalking
+2. Check keyword is assigned to correct shortcode (20384)
+3. Ensure callback URL is publicly accessible
+4. Test with curl: curl -X POST http://localhost:5000/sms/callback \
+                     -d "from=+254799489045" -d "text=TEXT2"
+
+
+═══════════════════════════════════════════════════════════════
+📞 CONTACT & SUPPORT
+═══════════════════════════════════════════════════════════════
+
+System Status:
+- ✅ Configuration: CORRECT
+- ✅ Keyword: TEXT2
+- ✅ Shortcode: 20384
+- ✅ Sender ID: AFTKNG
+- ⏳ Balance: CHECK IN AT DASHBOARD
+
+Next Steps:
+1. Ensure Flask app is running
+2. Set callback URL in AfricasTalking
+3. Top up account balance
+4. Test with real SMS to 20384
+5. Monitor Flask logs for debugging
+
+You're ready to go! 🚀
