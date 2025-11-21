@@ -10,7 +10,7 @@
 ┌──────────────┐                                    ┌──────────────┐
 │              │                                    │              │
 │  Passengers  │◄───────── SMS Messages ──────────►│ AfricasTalk  │
-│              │           (Shortcode 2045)        │              │
+│              │           (Shortcode 20880)       │              │
 └──────────────┘                                    └──────┬───────┘
                                                            │
                                                            │ Webhook
@@ -47,7 +47,7 @@
 │  Passenger  │
 └──────┬──────┘
        │
-       │ 1. Sends "STAMFORD" to 2045
+       │ 1. Sends "STAMFORD" to 20880
        ▼
 ┌─────────────────┐
 │ AfricasTalking  │
