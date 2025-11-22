@@ -225,7 +225,7 @@ def handle_stop_selection(phone_number, passenger, stop_number):
             db.session.add(response)
             db.session.commit()
             
-            message = f"✅ Confirmed! You will be picked up at {selected_stop}.\n\nThank you for using Nazigi Stamford Bus Service!"
+            message = f"Confirmed! You will be picked up at {selected_stop}.\n\nThank you for using Nazigi Stamford Bus Service!"
             current_app.logger.info(f"📲 Sending confirmation to {phone_number}")
             response_sms = sms_service.send_sms(phone_number, message)
             current_app.logger.info(f"📬 Response from send_sms: {response_sms}")
