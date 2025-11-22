@@ -26,12 +26,22 @@ def format_stops_message():
         message += f"{idx}. {stop}\n"
     return message
 
-@sms_bp.route('/sms/callback', methods=['POST'])
+@sms_bp.route('/sms/callback', methods=['GET', 'POST'])
 def sms_callback():
     """
     Handle incoming SMS from AfricasTalking
     This endpoint receives all incoming messages
     """
+    # Handle GET requests (for testing)
+    if request.method == 'GET':
+        return jsonify({
+            'status': 'ready',
+            'message': 'SMS callback endpoint is active',
+            'endpoint': '/sms/callback',
+            'method': 'POST',
+            'expected_params': ['from', 'to', 'text', 'date', 'id', 'linkId']
+        }), 200
+    
     try:
         # Get data from AfricasTalking
         from_number = request.values.get('from', '')
@@ -57,8 +67,10 @@ def sms_callback():
         else:
             current_app.logger.info(f"👤 New passenger, not in database yet")
         
-        # Handle opt-in request
-        if text.lower() == 'test2':
+        # Handle opt-in request (TEST2 keyword - case insensitive)
+        # AfricasTalking might send just the keyword or the full message
+        text_lower = text.lower().strip()
+        if text_lower == 'test2' or text_lower.startswith('test2'):
             current_app.logger.info(f"🎯 Detected keyword: TEST2 - routing to opt-in handler")
             return handle_opt_in_request(from_number, passenger)
         
@@ -124,7 +136,7 @@ def handle_opt_in_request(phone_number, passenger):
         response = sms_service.send_sms(phone_number, message)
         current_app.logger.info(f"📬 Response from send_sms: {response}")
         
-        return jsonify({'status': 'success', 'message': 'Opt-in request sent'})
+        return jsonify({'status': 'success', 'message': 'Opt-in request sent'}), 200
         
     except Exception as e:
         current_app.logger.error(f"❌ Error handling opt-in request: {str(e)}", exc_info=True)
@@ -153,7 +165,7 @@ def handle_opt_in_confirmation(phone_number, passenger):
         response = sms_service.send_sms(phone_number, message)
         current_app.logger.info(f"📬 Response from send_sms: {response}")
         
-        return jsonify({'status': 'success', 'message': 'User opted in'})
+        return jsonify({'status': 'success', 'message': 'User opted in'}), 200
         
     except Exception as e:
         current_app.logger.error(f"❌ Error handling opt-in confirmation: {str(e)}", exc_info=True)
@@ -178,6 +190,8 @@ def handle_opt_out(phone_number, passenger):
         current_app.logger.info(f"📲 Sending opt-out confirmation to {phone_number}")
         response = sms_service.send_sms(phone_number, message)
         current_app.logger.info(f"📬 Response from send_sms: {response}")
+        
+        return jsonify({'status': 'success', 'message': 'User opted out'}), 200
         
         return jsonify({'status': 'success', 'message': 'User opted out'})
         
