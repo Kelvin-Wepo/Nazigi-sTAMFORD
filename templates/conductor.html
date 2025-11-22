@@ -694,9 +694,14 @@
         // Load Dashboard Stats
         async function loadDashboard() {
             try {
-                const response = await fetch(`${API_BASE}/conductor/dashboard`, {
+                const response = await fetch(`${API_BASE}/conductor/api/stats`, {
                     headers: { 'Authorization': authHeader }
                 });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
                 const data = await response.json();
                 
                 document.getElementById('totalPassengers').textContent = data.statistics.total_passengers;
@@ -705,6 +710,7 @@
                 document.getElementById('totalResponses').textContent = data.statistics.total_responses;
             } catch (error) {
                 console.error('Error loading dashboard:', error);
+                // Show error in console but don't break the page
             }
         }
 
